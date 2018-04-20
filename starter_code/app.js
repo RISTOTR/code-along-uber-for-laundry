@@ -33,8 +33,8 @@ const app = express();
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 app.use(
   session({
     secret: "maluca",
@@ -51,6 +51,7 @@ app.use(
 app.use((req, res, next) => {
   if (req.session.currentUser) {
     res.locals.currentUserInfo = req.session.currentUser;
+   
     res.locals.isUserLoggedIn = true;
   } else {
     res.locals.isUserLoggedIn = false;
@@ -82,5 +83,8 @@ app.use("/", index);
 
 const authRoutes = require("./routes/authRoutes");
 app.use("/auth", authRoutes);
+
+const laundryRoutes = require("./routes/laundry");
+app.use("/laundry", laundryRoutes);
 
 module.exports = app;
